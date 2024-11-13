@@ -1,0 +1,1 @@
+A weather application utilizing the OpenWeatherMap API to fetch real-time weather data for a specified location. It displays key weather information such as temperature, humidity, wind speed, and weather conditions.
