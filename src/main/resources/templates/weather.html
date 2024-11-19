@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>⛅Weather App by GoldenCat⛅</title>
+    <title>⛅Weather App⛅</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Weather Icons CSS -->
@@ -12,7 +12,15 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card">
+            
+             <!-- Error if City Not Found -->
+            <div th:if="${error}" class="alert alert-danger mt-3">
+                <p>Error: <span th:text="${error}"></span></p>
+                <a href="/" class="btn btn-secondary btn-block mt-3">Back</a>
+            </div>
+
+            <!-- Display the City's Weather  -->
+            <div th:if="${error == null}" class="card">
                 <div class="card-body text-center">
                     <h1 class="card-title">Weather in <span th:text="${city}">City</span>, <span th:text="${country}">Country</span></h1>
                     <span th:classappend="${weatherIcon} + ' weather-icon'"></span>
@@ -21,9 +29,6 @@
                     <p class="card-text"><strong>Humidity:</strong> <span th:text="${humidity}">Humidity</span>%</p>
                     <p class="card-text"><strong>Wind Speed:</strong> <span th:text="${windSpeed}">Wind Speed</span> m/s</p>
                     <a href="/" class="btn btn-secondary btn-block">Back</a>
-                    <div th:if="${error}" class="alert alert-danger mt-3">
-                        <p>Error: <span th:text="${error}"></span></p>
-                    </div>
                 </div>
             </div>
         </div>
