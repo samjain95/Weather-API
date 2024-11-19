@@ -24,20 +24,25 @@ public class WeatherController {
     public String getWeather(@RequestParam("city") String city, Model model){
         String url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appId=" + apiKey + "&units=metric";
         RestTemplate restTemplate = new RestTemplate();
-        WeatherResponse  weatherResponse = restTemplate.getForObject(url, WeatherResponse.class);
 
-        if(weatherResponse!=null){
-            model.addAttribute("city", weatherResponse.getName());
-            model.addAttribute("country", weatherResponse.getSys().getCountry());
-            model.addAttribute("weatherDescription", weatherResponse.getWeather().get(0).getDescription());
-            model.addAttribute("temperature", weatherResponse.getMain().getTemp());
-            model.addAttribute("humidity", weatherResponse.getMain().getHumidity());
-            model.addAttribute("windSpeed", weatherResponse.getWind().getSpeed());
+        try{
+            WeatherResponse  weatherResponse = restTemplate.getForObject(url, WeatherResponse.class);
 
-            String weatherIcon = "wi wi-owm-" + weatherResponse.getWeather().get(0).getId();
-            model.addAttribute("weatherIcon");
-        }else{
+            if(weatherResponse!=null){
+                model.addAttribute("city", weatherResponse.getName());
+                model.addAttribute("country", weatherResponse.getSys().getCountry());
+                model.addAttribute("weatherDescription", weatherResponse.getWeather().get(0).getDescription());
+                model.addAttribute("temperature", weatherResponse.getMain().getTemp());
+                model.addAttribute("humidity", weatherResponse.getMain().getHumidity());
+                model.addAttribute("windSpeed", weatherResponse.getWind().getSpeed());
+
+                String weatherIcon = "wi wi-owm-" + weatherResponse.getWeather().get(0).getId();
+                model.addAttribute("weatherIcon", weatherIcon);
+            }
+        }catch(HttpClientErrorException.NotFound e){
             model.addAttribute("error", "City not found");
+        }catch(Exception e){
+            model.addAttribute("error", "An error occurred while fetching weather data. Please try again.");
         }
 
         return "weather";
